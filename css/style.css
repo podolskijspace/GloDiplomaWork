@@ -359,7 +359,9 @@ template, [hidden] {
         align-items: flex-end;
         top: 0;
         -webkit-transition: 0.5s;
-        transition: 0.5s; }
+        transition: 0.5s; 
+        margin-left: -4px;
+      }
         .header-contacts__phone-number-accord a {
           -webkit-transition: 0.5s;
           transition: 0.5s;
