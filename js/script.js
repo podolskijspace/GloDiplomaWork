@@ -110,6 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     moveNumber =  -moveNumber;
                     moveWindowUp();
                 }
+                popupDialogMenu.style.transform = transform;
             }
         });
     };
