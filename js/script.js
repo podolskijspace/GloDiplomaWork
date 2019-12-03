@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     accordionNumber();
 
-    //Всплытие модального окна
+    //Плавное появление модального окна
     const showModal = (selector) => {
         const modal = document.querySelector(selector);
         let opacity = 0;
@@ -130,17 +130,28 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 popupDialogMenu.style.transform = transform;
             }
-            if  (target.closest('.menu-link, .no-overflow')){
+            console.log(target);
+            if  (target.closest('.show-repair')){
+                console.log('show popup');
                 showModal('.popup-repair-types');
                 popupDialogMenu.style.transform = transform;
             }
         });
         const anothBlockBtnShowModal = document.querySelector('.show-repair-modal');
-        console.log(anothBlockBtnShowModal);
         anothBlockBtnShowModal.addEventListener('click', () => showModal('.popup-repair-types'));
     };
     menu();
-    
-
+    //Аккордеон внизу
+    const accordion = () => {
+        const   accordion = document.querySelector('.accordion'),
+                    items = document.querySelectorAll('h2');
+        accordion.addEventListener('click', event => {
+            let target = event.target;
+            if (target.matches('.title_block')) {
+                items[target.dataset.number].classList.toggle('msg-active')
+            };
+        })
+    }
+    accordion();
 
 }); 
