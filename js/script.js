@@ -43,4 +43,78 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
     accordionNumber();
-});
+
+    //MENU
+
+    const menu = () => {
+        const   popupDialogMenu = document.querySelector('.popup-dialog-menu'),
+                    menuBtn = document.querySelector('.menu__icon'),
+                    buttonFooter = document.querySelector('.button-footer'),
+                    popupMenu = document.querySelector('.popup-menu');
+        menuBtn.addEventListener('click', event => {
+            popupDialogMenu.style.transform = 'translate3d(0, 0, 0)';
+        });
+
+        //плавная прокрутка вверх
+        const goOnTop = () => {
+            window.scrollBy(0, -100);
+            if (window.scrollY > 0) {
+                requestAnimationFrame(goOnTop);
+            }
+        };
+        buttonFooter.addEventListener('click', goOnTop);
+
+        //События по кнопкам меню
+        popupMenu.addEventListener('click', event => {
+            let     transform,
+                    target = event.target;
+            if (window.innerWidth < 576) {
+                transform = 'translate3d(0, -100vh, 0)';
+            }
+            else {
+                transform = 'translate3d(645px, 0, 0)';
+            }
+            if (target.closest('.close-menu')) {
+                popupDialogMenu.style.transform = transform;
+            }
+            if(target.matches('.move-link')) {
+                event.preventDefault();
+                let    coordY = document.querySelector(target.getAttribute('href')).getBoundingClientRect().top + 
+                window.pageYOffset,
+                        moveNumber = 50;
+
+                const moveWindowUp = () => {
+                    window.scrollBy(0, moveNumber);
+                    if ((window.scrollY - coordY) > 100) {
+                        requestAnimationFrame(moveWindowUp);
+                    }
+                    else {
+                        window.scrollBy(0, -(window.scrollY - coordY));
+                    }
+                },
+
+                moveWindowDown = () => {
+                    window.scrollBy(0, moveNumber);
+                    if (( coordY - window.scrollY) > 100) {
+                        requestAnimationFrame(moveWindowDown);
+                    }
+                    else {
+                        window.scrollBy(0, coordY - window.scrollY);
+                    }
+                };
+                if (coordY >= window.scrollY) {
+                    moveWindowDown();
+                    
+                }
+                else {
+                    moveNumber =  -moveNumber;
+                    moveWindowUp();
+                }
+            }
+        });
+    };
+    menu();
+    
+
+
+}); 
