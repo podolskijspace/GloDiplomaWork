@@ -44,6 +44,24 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     accordionNumber();
 
+    //Всплытие модального окна
+    const showModal = (selector) => {
+        const modal = document.querySelector(selector);
+        let opacity = 0;
+        modal.style.display = 'block';
+        modal.style.visibility = 'visible';
+        const plusOpacity = () => {
+            opacity += 0.05;
+            modal.style.opacity = opacity;
+            if (opacity < 1) {
+                requestAnimationFrame(plusOpacity);
+            }
+            // popup-repair-types
+        };
+        plusOpacity();
+        console.log(modal);
+    };
+
     //MENU
 
     const menu = () => {
@@ -112,7 +130,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 popupDialogMenu.style.transform = transform;
             }
+            if  (target.closest('.menu-link, .no-overflow')){
+                showModal('.popup-repair-types');
+                popupDialogMenu.style.transform = transform;
+            }
         });
+        const anothBlockBtnShowModal = document.querySelector('.show-repair-modal');
+        console.log(anothBlockBtnShowModal);
+        anothBlockBtnShowModal.addEventListener('click', () => showModal('.popup-repair-types'));
     };
     menu();
     
