@@ -47,8 +47,13 @@ document.addEventListener('DOMContentLoaded', () => {
     //Плавное появление модального окна
     const showModal = (selector) => {
         const modal = document.querySelector(selector);
-        let opacity = 0;
-        modal.style.display = 'block';
+        let opacity;
+        if (modal.style.opacity > 0) {
+            opacity = modal.style.opacity;
+        }
+        else {
+            opacity = 0;
+        }
         modal.style.visibility = 'visible';
         const plusOpacity = () => {
             opacity += 0.05;
@@ -59,7 +64,28 @@ document.addEventListener('DOMContentLoaded', () => {
             // popup-repair-types
         };
         plusOpacity();
-        console.log(modal);
+    };
+    //Плавное изчезновение модального окна
+    const unShowModal = (selector) => {
+        const modal = document.querySelector(selector);
+        let opacity;
+        if (modal.style.opacity < 1) {
+            opacity = modal.style.opacity;
+        }
+        else {
+            opacity = 1;
+        }
+        const minusOpacity = () => {
+            opacity -= 0.05;
+            modal.style.opacity = opacity;
+            if (opacity > 0) {
+                requestAnimationFrame(minusOpacity);
+            } 
+            else {
+                modal.style.visibility = 'hidden';
+            }
+        };
+        minusOpacity();
     };
 
     //MENU
@@ -80,18 +106,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 requestAnimationFrame(goOnTop);
             }
         };
-        buttonFooter.addEventListener('click', goOnTop);
+        buttonFooter.addEventListener('click', () => {
+            let transform = checkTransform();
+            goOnTop();
+            popupDialogMenu.style.transform = transform;
+        });
 
         //События по кнопкам меню
         popupMenu.addEventListener('click', event => {
-            let     transform,
+            let     transform = checkTransform(),
                     target = event.target;
-            if (window.innerWidth < 576) {
-                transform = 'translate3d(0, -100vh, 0)';
-            }
-            else {
-                transform = 'translate3d(645px, 0, 0)';
-            }
             if (target.closest('.close-menu')) {
                 popupDialogMenu.style.transform = transform;
             }
@@ -138,20 +162,90 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
         const anothBlockBtnShowModal = document.querySelector('.show-repair-modal');
-        anothBlockBtnShowModal.addEventListener('click', () => showModal('.popup-repair-types'));
+        anothBlockBtnShowModal.addEventListener('click', () =>{
+            let transform = checkTransform();
+            showModal('.popup-repair-types');
+            popupDialogMenu.style.transform = transform;
+        });
+        const checkTransform = () => {
+            if (window.innerWidth < 576) {
+                return 'translate3d(0, -100vh, 0)';
+            }
+            else {
+                return 'translate3d(645px, 0, 0)';
+            }
+        }
     };
     menu();
     //Аккордеон внизу
     const accordion = () => {
         const   accordion = document.querySelector('.accordion'),
                     items = document.querySelectorAll('h2');
+        let old = 0;
         accordion.addEventListener('click', event => {
             let target = event.target;
             if (target.matches('.title_block')) {
-                items[target.dataset.number].classList.toggle('msg-active')
+                items[old].classList.remove('msg-active');
+                old = target.dataset.number
+                items[old].classList.add('msg-active')
             };
         })
     }
     accordion();
-
-}); 
+    //Подсказки
+    const helpPopup = () => {
+        const blockWatched = document.getElementById('formula');
+        let     num,
+                _this,
+                _thisBefore,
+                items,
+                mainTop = blockWatched.getBoundingClientRect().top;
+        blockWatched.addEventListener('mouseover', event => {
+            const target = event.target;
+            if (target.closest('.formula-item__icon-inner-text')){
+                num = +target.textContent;
+                let selector = `.formula-item-popup-0${num}`;
+                _this = document.querySelectorAll(selector)[0];
+                _thisBefore = document.querySelector(`${selector}-before`);
+                items = document.querySelectorAll('.formula-item');
+                // if ((mainTop - window.scrollY) < 350) {
+                    // console.log('УРА');
+                    // _thisBefore.style.transform = "rotate(180deg)";
+                    // _thisBefore.style.top = "-10px";
+                    // _this.style.top = "110px";
+                // }
+                
+                showModal(selector);
+                
+            }
+        })
+        blockWatched.addEventListener('mouseout', event => {
+            const target = event.target;
+            if (target.closest('.formula-item__icon-inner-text')){
+                num = +target.textContent;
+                let selector = `.formula-item-popup-0${num}`;
+                _this = document.querySelector(selector);
+                unShowModal(selector);
+                
+            }
+        })
+            // .formula-item-popup-01:before
+        // transform: rotate(180deg);
+        //top: -10px
+        // .formula-item-popup-01
+        //top 110px
+    }
+    helpPopup();
+    //Кнопки проконсультироваться
+    const consult = () => {
+        const btnsConsult = document.querySelectorAll('.button_wide');
+        btnsConsult.forEach(item => item.addEventListener('click', () => showModal('.popup-consultation')));
+    };
+    consult();
+    //Политика конфедициальности
+    const politicPopup = () => {
+        let btnsPolitic = document.querySelectorAll('.link-privacy');
+        btnsPolitic.forEach(item => item.addEventListener('click', () => showModal('.popup-privacy')));
+    };
+    politicPopup();
+});  

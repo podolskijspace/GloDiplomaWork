@@ -971,7 +971,7 @@ template, [hidden] {
         @media (max-width: 575px) {
           .formula-item-popup-01 {
             min-height: 100px; } }
-        .formula-item-popup-01:before {
+        .formula-item-popup-01-before {
           position: absolute;
           top: 0;
           left: 0;
@@ -986,7 +986,7 @@ template, [hidden] {
         @media (max-width: 575px) {
           .formula-item-popup-02 {
             min-height: 118px; } }
-        .formula-item-popup-02:before {
+        .formula-item-popup-02-before {
           position: absolute;
           top: 0;
           left: 0;
@@ -997,7 +997,7 @@ template, [hidden] {
           background-size: contain;
           z-index: -1; }
           @media (max-width: 575px) {
-            .formula-item-popup-02:before {
+            .formula-item-popup-02-before {
               background: url("../images/formula/item_popup_4.svg") no-repeat;
               background-size: contain; } }
       .formula-item-popup-03 {
@@ -1005,7 +1005,7 @@ template, [hidden] {
         @media (max-width: 575px) {
           .formula-item-popup-03 {
             min-height: 151px; } }
-        .formula-item-popup-03:before {
+        .formula-item-popup-03-before {
           position: absolute;
           top: 0;
           left: 0;
@@ -1020,7 +1020,7 @@ template, [hidden] {
         @media (max-width: 575px) {
           .formula-item-popup-04 {
             min-height: 118px; } }
-        .formula-item-popup-04:before {
+        .formula-item-popup-04-before {
           position: absolute;
           top: 0;
           left: 0;
@@ -1036,7 +1036,7 @@ template, [hidden] {
           .formula-item-popup-05 {
             min-height: 163px;
             padding-top: 30px; } }
-        .formula-item-popup-05:before {
+        .formula-item-popup-05-before {
           position: absolute;
           top: 0;
           left: 0;
@@ -1053,7 +1053,7 @@ template, [hidden] {
         @media (max-width: 575px) {
           .formula-item-popup-06 {
             min-height: 100px; } }
-        .formula-item-popup-06:before {
+        .formula-item-popup-06-before {
           position: absolute;
           top: 0;
           left: 0;
@@ -1064,7 +1064,7 @@ template, [hidden] {
           background-size: contain;
           z-index: -1; }
           @media (max-width: 575px) {
-            .formula-item-popup-06:before {
+            .formula-item-popup-06-before {
               background: url("../images/formula/item_popup_1.svg") no-repeat;
               background-size: contain; } }
 
