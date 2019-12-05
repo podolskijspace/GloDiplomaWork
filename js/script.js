@@ -61,7 +61,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (opacity < 1) {
                 requestAnimationFrame(plusOpacity);
             }
-            // popup-repair-types
         };
         plusOpacity();
     };
@@ -94,7 +93,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const   popupDialogMenu = document.querySelector('.popup-dialog-menu'),
                     menuBtn = document.querySelector('.menu__icon'),
                     buttonFooter = document.querySelector('.button-footer'),
-                    popupMenu = document.querySelector('.popup-menu');
+                    popupMenu = document.querySelector('.popup-menu'),
+                    repairModal = document.querySelector('.popup-repair-types');
+
         menuBtn.addEventListener('click', event => {
             popupDialogMenu.style.transform = 'translate3d(0, 0, 0)';
         });
@@ -154,9 +155,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 popupDialogMenu.style.transform = transform;
             }
-            console.log(target);
             if  (target.closest('.show-repair')){
-                console.log('show popup');
                 showModal('.popup-repair-types');
                 popupDialogMenu.style.transform = transform;
             }
@@ -174,7 +173,8 @@ document.addEventListener('DOMContentLoaded', () => {
             else {
                 return 'translate3d(645px, 0, 0)';
             }
-        }
+        };
+        repairModal.querySelector('.close').addEventListener('click', () => unShowModal('.popup-repair-types'));
     };
     menu();
     //Аккордеон внизу
@@ -186,11 +186,11 @@ document.addEventListener('DOMContentLoaded', () => {
             let target = event.target;
             if (target.matches('.title_block')) {
                 items[old].classList.remove('msg-active');
-                old = target.dataset.number
-                items[old].classList.add('msg-active')
-            };
-        })
-    }
+                old = target.dataset.number;
+                items[old].classList.add('msg-active');
+            }
+        });
+    };
     accordion();
     //Подсказки
     const helpPopup = () => {
@@ -218,7 +218,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 showModal(selector);
                 
             }
-        })
+        });
         blockWatched.addEventListener('mouseout', event => {
             const target = event.target;
             if (target.closest('.formula-item__icon-inner-text')){
@@ -228,27 +228,31 @@ document.addEventListener('DOMContentLoaded', () => {
                 unShowModal(selector);
                 
             }
-        })
+        });
             // .formula-item-popup-01:before
         // transform: rotate(180deg);
         //top: -10px
         // .formula-item-popup-01
         //top 110px
-    }
+    };
     helpPopup();
     //Кнопки проконсультироваться
     const consult = () => {
-        const btnsConsult = document.querySelectorAll('.button_wide');
+        const   btnsConsult = document.querySelectorAll('.button_wide'),
+                    cunsultPopup = document.querySelector('.popup-consultation');
         btnsConsult.forEach(item => item.addEventListener('click', () => showModal('.popup-consultation')));
+        cunsultPopup.querySelector('.close').addEventListener('click', () => unShowModal('.popup-consultation'));
     };
     consult();
     //Политика конфедициальности
     const politicPopup = () => {
-        let btnsPolitic = document.querySelectorAll('.link-privacy');
+        const   btnsPolitic = document.querySelectorAll('.link-privacy'),
+                    politicPopup = document.querySelector('.popup-privacy');
         btnsPolitic.forEach(item => item.addEventListener('click', () => showModal('.popup-privacy')));
+        politicPopup.querySelector('.close').addEventListener('click', () => unShowModal('.popup-privacy'));
     };
     politicPopup();
-
+    //ТАБЫ
     const tabs = () => {
         const   tabWrapper = document.querySelector('#scheme'),
                     buttonList = tabWrapper.querySelector('.nav-list'),
@@ -271,7 +275,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 
             }
-        })
+        });
 
     };
     tabs();
