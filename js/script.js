@@ -166,7 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 .then (data => {
                     addTabsOnRepairPopup(data);
                 })
-                .catch (error => console.error(error))
+                .catch (error => console.error(error));
             };
 
             let k = 0;
@@ -235,14 +235,14 @@ document.addEventListener('DOMContentLoaded', () => {
                             }
                         }
                     }
-                })
-            }
+                });
+            };
 
             if  (target.closest('.show-repair')){
                 showModal('.popup-repair-types');
                 popupDialogMenu.style.transform = transform;
                 if (!repairModal.dataset.first) {
-                    repairModal.dataset.first = "false"
+                    repairModal.dataset.first = "false";
                     getArrFromJSON();
                 }
             }
@@ -408,4 +408,51 @@ document.addEventListener('DOMContentLoaded', () => {
     for (let i = 1; i <= 6; i++) {
         makeForm(`#feedback${i}`);
     }
+    //СЛАЙДЕР
+    const slider = (slideSelector, sliderSelector, leftSelector, rightSelector) => {
+        const   slide = document.querySelectorAll(slideSelector),
+                    slider = document.querySelector(sliderSelector),
+                    left = document.querySelector(leftSelector),
+                    right = document.querySelector(rightSelector);
+        let currentSlide = 0;
+        console.log(left);
+        
+        const prevSlide = (elem, index) => {
+            elem[index].classList.remove('podolskij-active');
+        };
+        
+        const nextSlide = (elem, index) => {
+            elem[index].classList.add('podolskij-active');
+        };
+
+        left.addEventListener('click', event => {
+            console.log('left');
+            prevSlide(slide, currentSlide);
+            currentSlide--;
+            if (currentSlide < 0) {
+                currentSlide = slide.length - 1;
+            }
+            nextSlide(slide, currentSlide);
+        });
+
+        right.addEventListener('click', event => {
+            prevSlide(slide, currentSlide);
+            currentSlide++;
+            if (currentSlide >= slide.length) {
+                currentSlide = 0;
+            }
+            nextSlide(slide, currentSlide);
+        });
+
+    };
+
+    //Документы
+    const documentsSlider = () => {
+        slider('.transparency-item', '.transparency-slider-wrap', '#transparency-arrow_left', '#transparency-arrow_right');
+    };
+    if (window.outerWidth <= 1090) {
+        documentsSlider();
+    }
+
+    
 });  

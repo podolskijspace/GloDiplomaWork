@@ -1725,7 +1725,11 @@ div.wave-block:nth-child(17):after {
     @media (max-width: 1090px) {
       .transparency-item {
         margin-left: auto;
-        margin-right: auto; } }
+        margin-right: auto; 
+        opacity: 0;
+        visibility: hidden;
+        display: none;
+      } }
     @media (max-width: 1024px) {
       .transparency-item {
         width: auto; } }
@@ -6483,3 +6487,9 @@ strong {
 
 .slider-dots {
   display: none; }
+
+.podolskij-active {
+  opacity: 1;
+  visibility: visible;
+  display: flex;
+}
