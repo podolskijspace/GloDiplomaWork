@@ -296,12 +296,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 _this = document.querySelectorAll(selector)[0];
                 _thisBefore = document.querySelector(`${selector}-before`);
                 items = document.querySelectorAll('.formula-item');
-                // if ((mainTop - window.scrollY) < 350) {
-                    // console.log('УРА');
-                    // _thisBefore.style.transform = "rotate(180deg)";
-                    // _thisBefore.style.top = "-10px";
-                    // _this.style.top = "110px";
-                // }
+                console.dir();
+                if (_this.getBoundingClientRect().top < 10) {
+                    console.log('УРА');
+                    _thisBefore.style.transform = "rotate(180deg)";
+                    _thisBefore.style.top = "-10px";
+                    _this.style.top = "110px";
+                }
+                else {
+                    _thisBefore.style.transform = "";
+                    _thisBefore.style.top = "";
+                    _this.style.top = "";
+                }
                 
                 showModal(selector);
                 
@@ -488,7 +494,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const template = masked,
                 def = template.replace(/\D/g, ""),
                 val = this.value.replace(/\D/g, "");
-            console.log(template);
             let i = 0,
                 newValue = template.replace(/[_\d]/g, function (a) {
                     return i < val.length ? val.charAt(i++) || def.charAt(i) : a;
