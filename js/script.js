@@ -293,7 +293,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 let selector = `.formula-item-popup-0${num}`;
                 _this = document.querySelectorAll(selector)[0];
                 _thisBefore = document.querySelector(`${selector}-before`);
-                items = document.querySelectorAll('.formula-item');
                 console.dir();
                 if (_this.getBoundingClientRect().top < 10) {
                     console.log('УРА');
@@ -419,7 +418,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     currentSlide =  i;
                 }
             });
-        }
+        };
         
         const prevSlide = (elem, index) => {
             elem[index].classList.remove('podolskij-active');
@@ -457,7 +456,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     transparencyPopup = document.querySelector('.popup-transparency'),
                     slides = transparencyPopup.querySelectorAll('.popup-transparency-slider__slide');
         if (window.outerWidth <= 1090) {
-        slider('.transparency-item', '.transparency-slider-wrap', '#transparency-arrow_left', '#transparency-arrow_right');
+        slider('.transparency-item', '.transparency-slider-wrap', '#transparency-arrow_left', 
+        '#transparency-arrow_right');
         }
         transparencyWrapper.addEventListener('click', event => {
             const target = event.target;
@@ -468,10 +468,11 @@ document.addEventListener('DOMContentLoaded', () => {
             
         });
         transparencyPopup.querySelector('.close').addEventListener('click', event => {
-            unShowModal('.popup-transparency')
+            unShowModal('.popup-transparency');
             slides.forEach(item => item.classList.remove('podolskij-active'));
         });
-        slider('.popup-transparency-slider__slide', '.popup-transparency-slider-wrap', '#transparency_left', '#transparency_right');
+        slider('.popup-transparency-slider__slide', '.popup-transparency-slider-wrap', '#transparency_left', 
+        '#transparency_right');
     };
     
     documentsSlider();
@@ -607,7 +608,6 @@ document.addEventListener('DOMContentLoaded', () => {
         addStyle () {
         let style = document.getElementById('sliderCarousel-style');
         if (!style){
-            console.log('Заходим');
             style = document.createElement('style');
             style.id = 'sliderCarousel-style';
         }
@@ -675,7 +675,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .podolskij-slider__prev {
             border-right-color: #19b5fe;
             }
-        `
+        `;
         }
 
         responseInit () {
@@ -691,50 +691,125 @@ document.addEventListener('DOMContentLoaded', () => {
             count++;
             this.slidesToShow = allSlidesToShow[i];
             }
-        })
+        });
         if (count === 0) {
             this.slidesToShow = slidesToShowDefault;
         }
         this.options.widthSlide = Math.floor(100 / this.slidesToShow);
         this.addStyle();
         
-        }
+        };
 
-        checkResponse()
+        checkResponse();
         window.addEventListener('resize', checkResponse);
         }
 
 
     }
 
-    // const responseSlider = new sliderCarousel({
-    //     main: '.companies-wrapper',
-    //     wrap: '.companies-hor',
-    //     // prev: '#podolskij-left',
-    //     // next: '#podolskij-right',
-    //     slidesToShow: 5,
-    //     responsive: [
-    //     {
-    //         breakpoint: 1024,
-    //         slideToShow: 3
-    //     },
-    //     {
-    //         breakpoint: 768,
-    //         slideToShow: 2
-    //     },
-    //     {
-    //         breakpoint: 576,
-    //         slideToShow: 1
-    //     }
-    //     ]
+    const partnersSlider = new sliderCarousel({
+        main: '.partners__wrapper',
+        wrap: '.partners-slider',
+        prev: '#partners-arrow_left',
+        next: '#partners-arrow_right',
+        slidesToShow: 3,
+        responsive: [
+        {
+            breakpoint: 768,
+            slideToShow: 2
+        },
+        {
+            breakpoint: 576,
+            slideToShow: 1
+        }
+        ]
 
 
-    // });
-    // companySlider.init();
+    });
+    partnersSlider.init();
 
     //Слайдер с отзывами
     slider('.reviews-slider__slide', '.reviews-slider', '#reviews-arrow_left', '#reviews-arrow_right');
 
-    // (slideSelector, sliderSelector, leftSelector, rightSelector) 
+    //Блок виды ремонда. Слайдер и табы
+
+    const moveRepairBlock = () => {
+        const   wrapper = document.getElementById('repair-types'),
+                    tabsWrapper = wrapper.querySelector('.repair-types-tab'),
+                    tabsElems = tabsWrapper.querySelectorAll('.repair-types-nav__item'),
+                    sliderWrapper = wrapper.querySelector('.repair-types-slider'),
+                    countCurrent = wrapper.querySelector('.slider-counter-content__current'),
+                    countAll = wrapper.querySelector('.slider-counter-content__total');
+        let sliders = [];
+        for (let i = 0; i <=  4; i++) {
+            sliders[i] = wrapper.querySelector(`.types-repair${i+1}`);
+        }
+
+        const tabs = () => {
+            tabsWrapper.addEventListener('click', event => {
+                const target = event.target;
+
+                if (target.matches('.repair-types-nav__item')){
+                    let num = target.dataset.number - 1;
+                    tabsElems.forEach(item => item.classList.remove('active'));
+                    tabsElems[num].classList.add('active');
+                    sliderWrapper.insertAdjacentElement('afterbegin', sliders[num]);
+                    countAll.textContent = sliderWrapper.firstChild.children.length;
+                }
+            });
+        };
+        tabs();
+        const moveSliders = () => {
+            const    left = document.querySelector('#repair-types-arrow_left'),
+                        right = document.querySelector('#repair-types-arrow_right');
+            let     slider,
+                    wrapSlider;
+            let currentSlide = 0;
+
+            const findCurrentSlide = ()  => {
+                slider.forEach((item) => {
+                    if (item.classList.contains('podolskij--active')) { 
+                        currentSlide =  +item.dataset.number;
+                    }
+                });
+            };
+            
+            const prevSlide = (elem, index) => {
+                elem[index].classList.remove('podolskij--active');
+            };
+            
+            const nextSlide = (elem, index) => {
+                elem[index].classList.add('podolskij--active');
+                wrapSlider.insertAdjacentElement('afterbegin', elem[index]);
+            };
+
+            left.addEventListener('click', event => {
+                wrapSlider = sliderWrapper.children[0];
+                slider = [...sliderWrapper.children[0].children];
+                findCurrentSlide();
+                prevSlide(slider, currentSlide);
+                currentSlide--;
+                if (currentSlide < 0) {
+                    currentSlide = slider.length - 1;
+                }
+                nextSlide(slider, currentSlide);
+            });
+
+            right.addEventListener('click', event => {
+                wrapSlider = sliderWrapper.children[0];
+                slider = [...sliderWrapper.children[0].children];
+                findCurrentSlide();
+                prevSlide(slider, currentSlide);
+                currentSlide++;
+                if (currentSlide >= slider.length) {
+                    currentSlide = 0;
+                }
+                nextSlide(slider, currentSlide);
+            });
+        }
+        moveSliders();
+        //МНе не нужно добавлять класс,я могу просто брать data-number первого потомка, и его принимать за текущий, а следующий уже искать!!!
+    };
+    moveRepairBlock();
     
 });  

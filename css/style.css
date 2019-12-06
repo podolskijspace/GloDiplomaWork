@@ -3448,19 +3448,15 @@ div.wave-block:nth-child(17):after {
       margin-right: auto; }
       @media (max-width: 1024px) {
         .partners-slider__slide {
-          max-width: 114px;
           min-height: auto; }
           .partners-slider__slide svg {
-            max-width: 114px;
             max-height: 75px;
             margin-left: auto;
             margin-right: auto; } }
       @media (max-width: 575px) {
         .partners-slider__slide {
-          max-width: 134px;
           min-height: auto; }
           .partners-slider__slide svg {
-            max-width: 134px;
             max-height: 80px;
             margin-left: auto;
             margin-right: auto; } }
@@ -6078,12 +6074,18 @@ strong {
   z-index: 1; }
   @media (max-width: 1024px) {
     .wrapper {
-      max-width: 768px; } }
+      max-width: 768px; }
+    .partners__wrapper{
+      max-width: 100%;
+    }  }
   @media (max-width: 575px) {
     .wrapper {
       max-width: 290px;
       padding-left: 0;
-      padding-right: 0; } }
+      padding-right: 0; }
+      .partners__wrapper{
+        max-width: 100%;
+      } }
   .wrapper_middle {
     position: relative;
     max-width: 1058px;
