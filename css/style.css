@@ -6488,6 +6488,12 @@ strong {
 .slider-dots {
   display: none; }
 
+.popup-transparency-slider__slide {
+  opacity: 0;
+  visibility: hidden;
+  display: none;
+}
+
 .podolskij-active {
   opacity: 1;
   visibility: visible;

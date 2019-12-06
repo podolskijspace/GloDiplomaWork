@@ -415,7 +415,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     left = document.querySelector(leftSelector),
                     right = document.querySelector(rightSelector);
         let currentSlide = 0;
-        console.log(left);
+
+        const findCurrentSlide = ()  => {
+            slide.forEach((item, i) => {
+                if (item.classList.contains('podolskij-active')) { 
+                    currentSlide =  i;
+                }
+            });
+        }
         
         const prevSlide = (elem, index) => {
             elem[index].classList.remove('podolskij-active');
@@ -426,7 +433,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         left.addEventListener('click', event => {
-            console.log('left');
+            findCurrentSlide();
             prevSlide(slide, currentSlide);
             currentSlide--;
             if (currentSlide < 0) {
@@ -436,6 +443,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         right.addEventListener('click', event => {
+            findCurrentSlide();
             prevSlide(slide, currentSlide);
             currentSlide++;
             if (currentSlide >= slide.length) {
@@ -448,11 +456,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
     //Документы
     const documentsSlider = () => {
+        const   transparencyWrapper = document.querySelector('.transparency-slider-wrap'),
+                    transparencyPopup = document.querySelector('.popup-transparency'),
+                    slides = transparencyPopup.querySelectorAll('.popup-transparency-slider__slide');
+        if (window.outerWidth <= 1090) {
         slider('.transparency-item', '.transparency-slider-wrap', '#transparency-arrow_left', '#transparency-arrow_right');
+        }
+        transparencyWrapper.addEventListener('click', event => {
+            const target = event.target;
+            if (target.matches('.transparency-item__img')) {
+                showModal('.popup-transparency');
+                slides[+target.dataset.number].classList.add('podolskij-active');
+            }
+            
+        });
+        transparencyPopup.querySelector('.close').addEventListener('click', event => {
+            unShowModal('.popup-transparency')
+            slides.forEach(item => item.classList.remove('podolskij-active'));
+        });
+        slider('.popup-transparency-slider__slide', '.popup-transparency-slider-wrap', '#transparency_left', '#transparency_right');
     };
-    if (window.outerWidth <= 1090) {
-        documentsSlider();
-    }
+    
+    documentsSlider();
+    
+
+    
+
 
     
 });  
