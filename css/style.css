@@ -2147,14 +2147,8 @@ div.wave-block:nth-child(17):after {
       .problems-item-popup-1 {
         min-height: 344px;
         padding-top: 35px;
-        top: 245px; }
-        @media (min-width: 1025px) {
-          .problems-item-popup-1 {
-            top: 140px; } }
-        @media (max-width: 575px) {
-          .problems-item-popup-1 {
-            top: 190px; } }
-        .problems-item-popup-1:before {
+        bottom: 90px; }
+        .problems-item-popup-1-before {
           position: absolute;
           top: 0;
           left: 0;
@@ -2163,11 +2157,9 @@ div.wave-block:nth-child(17):after {
           content: '';
           background: url("../images/problems/popup_bg_1.svg") no-repeat;
           background-size: contain;
-          -webkit-transform: rotate(180deg);
-          transform: rotate(180deg);
           z-index: -1; }
           @media (max-width: 575px) {
-            .problems-item-popup-1:before {
+            .problems-item-popup-1-before {
               background: url("../images/problems/popup_bg_mobile.svg") no-repeat;
               background-size: contain;
               -webkit-transform: rotate(360deg);
@@ -2177,7 +2169,7 @@ div.wave-block:nth-child(17):after {
         @media (max-width: 575px) {
           .problems-item-popup-2 {
             min-height: 318px; } }
-        .problems-item-popup-2:before {
+        .problems-item-popup-2-before {
           position: absolute;
           top: 0;
           left: 0;
@@ -2187,12 +2179,12 @@ div.wave-block:nth-child(17):after {
           background: url("../images/problems/popup_bg_2.svg") no-repeat;
           z-index: -1; }
           @media (max-width: 575px) {
-            .problems-item-popup-2:before {
+            .problems-item-popup-2-before {
               background: url("../images/problems/popup_bg_mobile.svg") no-repeat;
               background-size: contain; } }
       .problems-item-popup-3 {
         min-height: 323px; }
-        .problems-item-popup-3:before {
+        .problems-item-popup-3-before {
           position: absolute;
           top: 0;
           left: 0;
@@ -2202,12 +2194,12 @@ div.wave-block:nth-child(17):after {
           background: url("../images/problems/popup_bg_3.svg") no-repeat;
           z-index: -1; }
           @media (max-width: 575px) {
-            .problems-item-popup-3:before {
+            .problems-item-popup-3-before {
               background: url("../images/problems/popup_bg_mobile.svg") no-repeat;
               background-size: contain; } }
       .problems-item-popup-4 {
         min-height: 304px; }
-        .problems-item-popup-4:before {
+        .problems-item-popup-4-before {
           position: absolute;
           top: 0;
           left: 0;
@@ -2217,7 +2209,7 @@ div.wave-block:nth-child(17):after {
           background: url("../images/problems/popup_bg_2.svg") no-repeat;
           z-index: -1; }
           @media (max-width: 575px) {
-            .problems-item-popup-4:before {
+            .problems-item-popup-4-before {
               background: url("../images/problems/popup_bg_mobile.svg") no-repeat;
               background-size: contain; } }
       .problems-item-popup__title {

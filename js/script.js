@@ -285,9 +285,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const blockWatched = document.getElementById('formula');
         let     num,
                 _this,
-                _thisBefore,
-                items,
-                mainTop = blockWatched.getBoundingClientRect().top;
+                _thisBefore;
         blockWatched.addEventListener('mouseover', event => {
             const target = event.target;
             if (target.closest('.formula-item__icon-inner-text')){
@@ -308,9 +306,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     _thisBefore.style.top = "";
                     _this.style.top = "";
                 }
-                
                 showModal(selector);
-                
             }
         });
         blockWatched.addEventListener('mouseout', event => {
@@ -323,11 +319,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 
             }
         });
-            // .formula-item-popup-01:before
-        // transform: rotate(180deg);
-        //top: -10px
-        // .formula-item-popup-01
-        //top 110px
     };
     helpPopup();
     //Кнопки проконсультироваться
@@ -525,6 +516,44 @@ document.addEventListener('DOMContentLoaded', () => {
         maskPhone(`#feedback-input${i}`);
     }
     
+    //Подсказки в блоке с проблемами
+    const problemPopup = () => {
+        const blockWatched = document.getElementById('problems');
+        let     num,
+                _this,
+                _thisBefore;
+        blockWatched.addEventListener('mouseover', event => {
+            const target = event.target;
+            if (target.matches('.svg-wrap')){
+                num = +target.dataset.number + 1;
+                let selector = `.problems-item-popup-${num}`;
+                _this = document.querySelectorAll(selector)[0];
+                _thisBefore = document.querySelector(`${selector}-before`);
+                if (_this.getBoundingClientRect().top < 10) {
+                    _thisBefore.style.transform = "rotate(180deg)";
+                    _thisBefore.style.top = "-10px";
+                    _this.style.top = "110px";
+                }
+                else {
+                    _thisBefore.style.transform = "";
+                    _thisBefore.style.top = "";
+                    _this.style.top = "";
+                }
+                showModal(selector);
+            }
+        });
+        blockWatched.addEventListener('mouseout', event => {
+            const target = event.target;
+            if (target.matches('.svg-wrap')){
+                num = +target.dataset.number + 1;
+                let selector = `.problems-item-popup-${num}`;
+                _this = document.querySelector(selector);
+                unShowModal(selector);
+                
+            }
+        });
+    };
+    problemPopup();
 
 
     
