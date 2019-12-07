@@ -293,17 +293,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 let selector = `.formula-item-popup-0${num}`;
                 _this = document.querySelectorAll(selector)[0];
                 _thisBefore = document.querySelector(`${selector}-before`);
-                console.dir();
                 if (_this.getBoundingClientRect().top < 10) {
-                    console.log('УРА');
                     _thisBefore.style.transform = "rotate(180deg)";
                     _thisBefore.style.top = "-10px";
                     _this.style.top = "110px";
-                }
-                else {
-                    _thisBefore.style.transform = "";
-                    _thisBefore.style.top = "";
-                    _this.style.top = "";
                 }
                 showModal(selector);
             }
@@ -313,8 +306,15 @@ document.addEventListener('DOMContentLoaded', () => {
             if (target.closest('.formula-item__icon-inner-text')){
                 num = +target.textContent;
                 let selector = `.formula-item-popup-0${num}`;
-                _this = document.querySelector(selector);
+                    _this = document.querySelector(selector);
+                    _thisBefore = document.querySelector(`${selector}-before`);
                 unShowModal(selector);
+                setTimeout(() => {
+                    _thisBefore.style.transform = "";
+                    _thisBefore.style.top = "";
+                    _this.style.top = "";
+                }, 300)
+                    
                 
             }
         });
@@ -519,14 +519,18 @@ document.addEventListener('DOMContentLoaded', () => {
     
     //Подсказки в блоке с проблемами
     const problemPopup = () => {
-        const blockWatched = document.getElementById('problems');
+        const blockWatched = document.getElementById('problems'),
+                    svgElems = blockWatched.querySelectorAll('.svg-wrap'),
+                    sliderWrap = document.querySelector('.problems-slider'),
+                    slides = sliderWrap.querySelectorAll('.problems-item'),
+                    left = document.getElementById('problems-arrow_left'),
+                    right = document.getElementById('problems-arrow_right');
         let     num,
                 _this,
-                _thisBefore;
-        blockWatched.addEventListener('mouseover', event => {
-            const target = event.target;
-            if (target.matches('.svg-wrap')){
-                num = +target.dataset.number + 1;
+                _thisBefore,
+                countSliders = 0;
+        svgElems.forEach(item => item.addEventListener('mouseenter', event => {
+                num = +item.dataset.number + 1;
                 let selector = `.problems-item-popup-${num}`;
                 _this = document.querySelectorAll(selector)[0];
                 _thisBefore = document.querySelector(`${selector}-before`);
@@ -535,23 +539,37 @@ document.addEventListener('DOMContentLoaded', () => {
                     _thisBefore.style.top = "-10px";
                     _this.style.top = "110px";
                 }
-                else {
-                    _thisBefore.style.transform = "";
-                    _thisBefore.style.top = "";
-                    _this.style.top = "";
-                }
                 showModal(selector);
+        }));
+        svgElems.forEach(item => item.addEventListener('mouseleave', event => {
+            num = +item.dataset.number + 1;
+            let selector = `.problems-item-popup-${num}`;
+            _this = document.querySelector(selector);
+            _thisBefore = document.querySelector(`${selector}-before`);
+            unShowModal(selector);
+            setTimeout(() => {
+                _thisBefore.style.transform = "";
+                _thisBefore.style.top = "";
+                _this.style.top = "";
+            }, 300)
+            
+        }));
+        left.addEventListener('click', event => {
+            countSliders--;
+            if (countSliders < 0) {
+                countSliders = slides.length - 1;
             }
+            sliderWrap.insertAdjacentElement('afterbegin', slides[countSliders]);
+            slides[countSliders].classList.add('active-item');
         });
-        blockWatched.addEventListener('mouseout', event => {
-            const target = event.target;
-            if (target.matches('.svg-wrap')){
-                num = +target.dataset.number + 1;
-                let selector = `.problems-item-popup-${num}`;
-                _this = document.querySelector(selector);
-                unShowModal(selector);
-                
+
+        right.addEventListener('click', event => {
+            countSliders++;
+            if (countSliders > slides.length - 1) {
+                countSliders = 0;
             }
+            sliderWrap.insertAdjacentElement('afterbegin', slides[countSliders]);
+            slides[countSliders].classList.add('active-item');
         });
     };
     problemPopup();
@@ -728,6 +746,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     partnersSlider.init();
 
+
     //Слайдер с отзывами
     slider('.reviews-slider__slide', '.reviews-slider', '#reviews-arrow_left', '#reviews-arrow_right');
 
@@ -777,7 +796,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    getResponseTabs(document.getElementById('scheme-list'), '#nav-arrow-scheme_left', '#nav-arrow-scheme_right')
+    getResponseTabs(document.getElementById('scheme-list'), '#nav-arrow-scheme_left', '#nav-arrow-scheme_right');
 
     //Блок виды ремонда. Слайдер и табы
 
@@ -873,5 +892,75 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
     moveRepairBlock();
+
+    //Добавляем слайдер на подсказки и проблемы
+
+    const sliderCarouselSpecial = (prevSelector, nextSelector, wrapSelector, slidesSelector) => {
+        const   prev = document.querySelector(prevSelector),
+                    next = document.querySelector(nextSelector),
+                    wrap = document.querySelector(wrapSelector),
+                    slides = wrap.querySelectorAll(slidesSelector),
+                    widthSlide = slides[0].clientWidth + (slides[0].offsetLeft * 2);
+        let position = -1;
+        prev.addEventListener('click', () => prevSlider());
+        next.addEventListener('click', () => nextSlider());
+
+        const prevSlider = ()  => {
+            if (position > -1) {
+                --position;
+                makeOpacity();
+                let pos = -(widthSlide * position);
+                wrap.style.transform = `translateX(${pos}px)`;
+            }
+        };
+
+        const nextSlider = ()  => {
+            if  (position < slides.length - 2){
+                ++position;
+                makeOpacity();
+                let pos = -(widthSlide * position);
+                wrap.style.transform = `translateX(${pos}px)`;
+            }
+        };
+
+        const makeOpacity1 = (elem) => {
+            elem.style.opacity = 1;
+        }
+        const makeOpacity5 = (elem) => {
+            elem.style.opacity = 0.5;
+        }
+        const makeOpacity0 = (elem) => {
+            elem.style.opacity = 0;
+        }
+        const makeOpacity = () => {
+            if (document.documentElement.clientWidth > 764) {
+                if (slides[position]) {
+                    makeOpacity5(slides[position]);
+                }
+                if (slides[position + 2]) {
+                    makeOpacity5(slides[position + 2]);
+                }
+            }
+            else {
+                if (slides[position]) {
+                    makeOpacity0(slides[position]);
+                }
+                if (slides[position + 2]) {
+                    makeOpacity0(slides[position + 2]);
+                }
+            }
+            if (slides[position + 1]) {
+                makeOpacity1(slides[position + 1]);
+            }
+            if (slides[position - 1]) {
+                makeOpacity0(slides[position-1]);
+            }
+        }
+        if (document.documentElement.clientWidth <= 764) {
+            makeOpacity0(slides[1]);
+        }
+    }; 
+
+    sliderCarouselSpecial('#formula-arrow_left', '#formula-arrow_right', '.formula-slider ', '.formula-slider__slide');
     
 });  
