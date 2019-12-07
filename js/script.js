@@ -739,7 +739,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     tabsElems = tabsWrapper.querySelectorAll('.repair-types-nav__item'),
                     sliderWrapper = wrapper.querySelector('.repair-types-slider'),
                     countCurrent = wrapper.querySelector('.slider-counter-content__current'),
-                    countAll = wrapper.querySelector('.slider-counter-content__total');
+                    countAll = wrapper.querySelector('.slider-counter-content__total'),
+                    tabsNav = tabsWrapper.querySelector('.nav-list-repair');
         let sliders = [];
         for (let i = 0; i <=  4; i++) {
             sliders[i] = wrapper.querySelector(`.types-repair${i+1}`);
@@ -755,6 +756,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     tabsElems[num].classList.add('active');
                     sliderWrapper.insertAdjacentElement('afterbegin', sliders[num]);
                     countAll.textContent = sliderWrapper.firstChild.children.length;
+                    countCurrent.textContent = +sliderWrapper.children[0].children[0].dataset.number + 1;
                 }
             });
         };
@@ -767,20 +769,29 @@ document.addEventListener('DOMContentLoaded', () => {
             let currentSlide = 0;
 
             const findCurrentSlide = ()  => {
-                slider.forEach((item) => {
-                    if (item.classList.contains('podolskij--active')) { 
-                        currentSlide =  +item.dataset.number;
+                currentSlide =  +slider[0].dataset.number;
+            };
+            
+            const prevSlide = (elem, index) => {
+                elem.forEach(item => {
+                    if (+item.dataset.number === index) {
+                        wrapSlider.insertAdjacentElement('afterbegin', item);
+                        changeCounter(+item.dataset.number + 1);
                     }
                 });
             };
             
-            const prevSlide = (elem, index) => {
-                elem[index].classList.remove('podolskij--active');
-            };
-            
             const nextSlide = (elem, index) => {
-                elem[index].classList.add('podolskij--active');
-                wrapSlider.insertAdjacentElement('afterbegin', elem[index]);
+                elem.forEach(item => {
+                    if (+item.dataset.number === index) {
+                        wrapSlider.insertAdjacentElement('afterbegin', item);
+                        changeCounter(+item.dataset.number + 1);
+                    }
+                });
+            };
+
+            const changeCounter = (index) => {
+                countCurrent.textContent = index;
             };
 
             left.addEventListener('click', event => {
@@ -806,9 +817,55 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 nextSlide(slider, currentSlide);
             });
-        }
+        };
         moveSliders();
-        //МНе не нужно добавлять класс,я могу просто брать data-number первого потомка, и его принимать за текущий, а следующий уже искать!!!
+
+        const getResponseTabs = (wrapper, left, right) => {
+            let    width = wrapper.clientWidth,
+                    elems = wrapper.children,
+                    elemWidth = elems[0].clientWidth,
+                    numberElems = elems.length,
+                    numberSpaces = numberElems + 1,
+                    spaceWidth = (width -  numberElems * elemWidth) / numberSpaces,
+                    position = spaceWidth + elemWidth,
+                    visibleWidth = wrapper.parentElement.clientWidth,
+                    steps = [],
+                    currentPosition = 1,
+                    arrowLeft = document.querySelector(left),
+                    arrowRight = document.querySelector(right);
+            steps[0] = visibleWidth;
+            while (position <= width) {
+                if (position > visibleWidth) {
+                    steps[currentPosition] = position; 
+                    currentPosition++;
+                }
+                position += spaceWidth + elemWidth;
+            }
+            currentPosition = 0;
+            
+
+            arrowRight.addEventListener('click', () => {
+                currentPosition++;
+                if (currentPosition >= steps.length - 1) {
+                    currentPosition = steps.length - 1;
+                }
+                let translateX = steps[currentPosition] - visibleWidth;
+                tabsNav.style.transform = `translateX(-${translateX}px)`;
+            });
+
+            arrowLeft.addEventListener('click', () => {
+                currentPosition--;
+                if (currentPosition < 0) {
+                    currentPosition = 0;
+                }
+                let translateX = steps[currentPosition] - visibleWidth;
+                tabsNav.style.transform = `translateX(-${translateX}px)`;
+            });
+        };
+
+        if (document.documentElement.clientWidth <= 1024) {
+            getResponseTabs(tabsNav, '#nav-arrow-repair-left_base', '#nav-arrow-repair-right_base');
+        }
     };
     moveRepairBlock();
     
