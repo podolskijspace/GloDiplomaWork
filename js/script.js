@@ -113,6 +113,90 @@ document.addEventListener('DOMContentLoaded', () => {
             popupDialogMenu.style.transform = transform;
         });
 
+        const getArrFromJSON = () => {
+            console.log('Событие');
+            fetch('../db/db.json')
+            .then(response => {
+                if (response.status !== 200) {
+                    throw new Error ('Status network not 200');
+                }
+                return (response.json());
+            })
+            .then (data => {
+                addTabsOnRepairPopup(data);
+            })
+            .catch (error => console.error(error));
+        };
+        getArrFromJSON();
+        let k = 0;
+        const addTabsOnRepairPopup = (arr) => {
+            const   btnsList = repairModal.querySelector('.nav-list-popup-repair'),
+                        title = repairModal.querySelector('.popup-repair-types-content__head-title'),
+                        tableWrapper = document.querySelector('tbody');
+
+            
+
+            for (let item of arr) {
+                const   btn = document.createElement('button');
+
+                k++;
+
+                btn.classList = 'button_o popup-repair-types-nav__item';
+                btn.textContent = item.title;
+                btnsList.appendChild(btn);
+                btn.dataset.number = k;
+
+                for (let insideItem of item.priceList) {
+                    const   trElems = [],
+                                tr = document.createElement('tr');
+
+                    tr.classList = 'mobile-row';
+                    tableWrapper.appendChild(tr);
+                    tr.dataset.number = k;
+                    if (k != 1) {
+                        tr.style.display = 'none';
+                    }
+
+                    for (let i = 0; i <= 4; i++) {
+                        trElems[i] = document.createElement('td');
+                    }
+
+                    trElems[0].classList = 'repair-types-name';
+                    trElems[1].classList = 'mobile-col-title tablet-hide desktop-hide';
+                    trElems[2].classList = 'mobile-col-title tablet-hide desktop-hide';
+                    trElems[3].classList = 'repair-types-value';
+                    trElems[4].classList = 'repair-types-value';
+
+                    trElems[0].textContent = insideItem.typeService;
+                    trElems[1].textContent = 'Ед.измерения';
+                    trElems[2].textContent = 'Цена за ед.';
+                    trElems[3].textContent = insideItem.units;
+                    trElems[4].textContent = insideItem.cost;
+
+                    for (let i = 0; i <= 4; i++) {
+                        tr.appendChild(trElems[i]);
+                    }
+                }
+            }
+            btnsList.addEventListener('click', event => {
+                const target = event.target;
+
+                if (target.matches('.popup-repair-types-nav__item')) {
+                    const   elems = repairModal.querySelectorAll('.mobile-row'),
+                                num = target.dataset.number;
+                    title.textContent = target.textContent;
+                    for ( let item of elems) {
+                        if  (item.dataset.number === num) {
+                            item.style.display = '';
+                        }
+                        else {
+                            item.style.display = 'none';
+                        }
+                    }
+                }
+            });
+        };
+
         //События по кнопкам меню
         popupMenu.addEventListener('click', event => {
             let     transform = checkTransform(),
@@ -155,96 +239,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 popupDialogMenu.style.transform = transform;
             }
-            const getArrFromJSON = () => {
-                fetch('../db/db.json')
-                .then(response => {
-                    if (response.status !== 200) {
-                        throw new Error ('Status network not 200');
-                    }
-                    return (response.json());
-                })
-                .then (data => {
-                    addTabsOnRepairPopup(data);
-                })
-                .catch (error => console.error(error));
-            };
-
-            let k = 0;
-            const addTabsOnRepairPopup = (arr) => {
-                const   btnsList = repairModal.querySelector('.nav-list-popup-repair'),
-                            title = repairModal.querySelector('.popup-repair-types-content__head-title'),
-                            tableWrapper = document.querySelector('tbody');
-
-                
-
-                for (let item of arr) {
-                    const   btn = document.createElement('button');
-
-                    k++;
-
-                    btn.classList = 'button_o popup-repair-types-nav__item';
-                    btn.textContent = item.title;
-                    btnsList.appendChild(btn);
-                    btn.dataset.number = k;
-
-                    for (let insideItem of item.priceList) {
-                        const   trElems = [],
-                                    tr = document.createElement('tr');
-
-                        tr.classList = 'mobile-row';
-                        tableWrapper.appendChild(tr);
-                        tr.dataset.number = k;
-                        if (k != 1) {
-                            tr.style.display = 'none';
-                        }
-
-                        for (let i = 0; i <= 4; i++) {
-                            trElems[i] = document.createElement('td');
-                        }
-
-                        trElems[0].classList = 'repair-types-name';
-                        trElems[1].classList = 'mobile-col-title tablet-hide desktop-hide';
-                        trElems[2].classList = 'mobile-col-title tablet-hide desktop-hide';
-                        trElems[3].classList = 'repair-types-value';
-                        trElems[4].classList = 'repair-types-value';
-
-                        trElems[0].textContent = insideItem.typeService;
-                        trElems[1].textContent = 'Ед.измерения';
-                        trElems[2].textContent = 'Цена за ед.';
-                        trElems[3].textContent = insideItem.units;
-                        trElems[4].textContent = insideItem.cost;
-
-                        for (let i = 0; i <= 4; i++) {
-                            tr.appendChild(trElems[i]);
-                        }
-                    }
-                }
-                btnsList.addEventListener('click', event => {
-                    const target = event.target;
-
-                    if (target.matches('.popup-repair-types-nav__item')) {
-                        const   elems = repairModal.querySelectorAll('.mobile-row'),
-                                    num = target.dataset.number;
-                        title.textContent = target.textContent;
-                        for ( let item of elems) {
-                            if  (item.dataset.number === num) {
-                                item.style.display = '';
-                            }
-                            else {
-                                item.style.display = 'none';
-                            }
-                        }
-                    }
-                });
-            };
+            
 
             if  (target.closest('.show-repair')){
                 showModal('.popup-repair-types');
                 popupDialogMenu.style.transform = transform;
-                if (!repairModal.dataset.first) {
-                    repairModal.dataset.first = "false";
-                    getArrFromJSON();
-                }
             }
 
         });
