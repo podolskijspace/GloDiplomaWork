@@ -1557,7 +1557,6 @@ div.wave-block:nth-child(17):after {
     margin-left: auto;
     margin-right: auto;
     border-radius: 20px;
-    overflow: hidden;
     z-index: 1; }
     @media (max-width: 1140px) {
       .portfolio-slider {
@@ -1600,11 +1599,7 @@ div.wave-block:nth-child(17):after {
           height: 100%;
           z-index: 10;
           cursor: pointer; }
-        .portfolio-slider__slide-frame:hover .item-hover {
-          visibility: visible;
-          opacity: 1;
-          -webkit-transition: 0.2s;
-          transition: 0.2s; }
+        
         .portfolio-slider__slide-frame-img {
           display: block;
           min-width: 100%;
@@ -6536,4 +6531,15 @@ strong {
 }
 #popup_portfolio_left,  #popup_portfolio_right{
   top: 300px !important;
+}
+#portfolio-arrow-mobile_right{
+  margin-right: -25px !important;
+}
+#portfolio-arrow-mobile_left{
+  margin-left: -25px !important;
+  color: black
+}
+
+#portfolio-arrow-mobile_left svg, #portfolio-arrow-mobile_right svg {
+  background: black;
 }
