@@ -1124,5 +1124,70 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
     moveDesignsBlock();
+    //блок с портфолио 
+    const portfolio = () => {
+        const wrapper = document.getElementById('portfolio'),
+                    slides = wrapper.querySelectorAll('.portfolio-slider__slide-frame'),
+                    popup = document.querySelector('.popup-portfolio'),
+                    popupSlidesWrapper = popup.querySelector('.popup-portfolio-slider'),
+                    popupSlides = popupSlidesWrapper.querySelectorAll('.popup-portfolio-slider__slide'),
+                    popupSliderCountCurrent = popup.querySelector('.slider-counter-content__current'),
+                    popupSliderCountTotal = popup.querySelector('.slider-counter-content__total'),
+                    popupTextBlocks = popup.querySelectorAll('.popup-portfolio-text'),
+                    right = document.getElementById('popup_portfolio_right'),
+                    left = document.getElementById('popup_portfolio_left');
+        wrapper.addEventListener('click', event => {
+            const target = event.target;
+
+            let num;
+            
+            if (target.matches('.portfolio-slider__slide-frame')) {
+                slides.forEach((item, i) => {
+                    if  (item === target) {
+                        num = i - 10;
+                    }
+                })
+                showModal('.popup-portfolio');
+                popupTextBlocks.forEach(item => item.style.display = '');
+                console.log(num);
+                popupTextBlocks[num].style.display = 'block';
+                popupSliderCountCurrent.textContent = num + 1;
+            }
+        })
+
+        popup.querySelector('.close').addEventListener('click', () => unShowModal('.popup-portfolio'));
+        const moveSlider = () => {
+        
+            left.addEventListener('click', event => {
+                let num = +popupSliderCountCurrent.textContent;
+                popupTextBlocks[num - 1].style.display = '';
+                if (num === 1) {
+                    num = 10;
+                } else {
+                    num--;
+                }
+                popupSlidesWrapper.insertAdjacentElement('afterbegin', popupSlides[num - 1]);
+                popupSliderCountCurrent.textContent = num;
+                popupTextBlocks[num - 1].style.display = 'block';
+            });
+
+            right.addEventListener('click', event => {
+                let num = +popupSliderCountCurrent.textContent;
+                popupTextBlocks[num - 1].style.display = '';
+                if (num === 10) {
+                    num = 1;
+                } else {
+                    num++;
+                }
+                popupSlidesWrapper.insertAdjacentElement('afterbegin', popupSlides[num - 1]);
+                popupSliderCountCurrent.textContent = num;
+                popupTextBlocks[num - 1].style.display = 'block';
+            });
+        };
+
+        moveSlider ();
+
+    }
+    portfolio();
     
 });  

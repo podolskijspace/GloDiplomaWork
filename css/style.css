@@ -6530,3 +6530,10 @@ strong {
     margin: 0px 1%;
   }
 }
+
+#popup-portfolio-counter{
+  top: 550px !important;
+}
+#popup_portfolio_left,  #popup_portfolio_right{
+  top: 300px !important;
+}
