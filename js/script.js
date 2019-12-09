@@ -981,7 +981,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     popupSliderWrapper = popup.querySelector('.popup-design-slider'),
                     popupSliderSlides = [...popupSliderWrapper.children],
                     countTotalPopup = popup.querySelector('.slider-counter-content__total'),
-                    countCurrentPopup = popup.querySelector('.slider-counter-content__current');
+                    countCurrentPopup = popup.querySelector('.slider-counter-content__current'),
+                    textBlock = popup.querySelectorAll('.popup-design-text');
         let num = 1,
             totalNum = 3;
         getResponseTabs(tabsNav, '#nav-arrow-designs_left', '#nav-arrow-designs_right');
@@ -1020,22 +1021,32 @@ document.addEventListener('DOMContentLoaded', () => {
                             num = i;
                         }
                         if (popupNavWrapper.children[i].classList.contains('active')) {
-                            popupNavWrapper.children[i].classList.remove('active')
+                            popupNavWrapper.children[i].classList.remove('active');
                         }
                     }
+                    
                     tabsElems.forEach((item, i) => {
                         if (item.classList.contains('active')) {
                             item.classList.remove('active');
                             popupNavWrapper.children[i].classList.remove('active');
+                            
                         }
                     });
+                    textBlock.forEach(item => {
+                        if (item.classList.contains('visible-content-block')) {
+                            item.classList.remove('visible-content-block');
+                            console.log(item);
+                        }
+                    })
                     target.classList.add('active');
+                    console.log(textBlock, num);
+                    textBlock[num].classList.add('visible-content-block');
                     popupSliderWrapper.insertAdjacentElement('afterbegin', popupSliderSlides[num]);
                     countTotalPopup.textContent = popupSliderSlides[num].childElementCount;
                     countCurrentPopup.textContent = +popupSliderSlides[num].children[0].dataset.number + 1;
                 }
-            });
-        };
+            })
+        }
         tabsPopup();
         const moveSliders = (countCurrent, left, right, sliderWrapper) => {
             let     slider,
