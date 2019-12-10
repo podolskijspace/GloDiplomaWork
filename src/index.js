@@ -1,3 +1,14 @@
+import '@babel/polyfill';
+import 'nodelist-foreach-polyfill';
+import 'formdata-polyfill';
+import 'es6-promise';
+import 'fetch-polyfill';
+
+// import 'symbol';
+// import '@babel/preset-env'
+// import "regenerator-runtime/runtime";
+
+
 import getResponseTabs from './modules/getResponseTabs';
 import slider from './modules/slider';
 import sliderCarousel from './modules/sliderCarousel';
@@ -5,7 +16,7 @@ import sliderCarouselSpecial from './modules/sliderCarouselSpecial';
 import showModal from './modules/showModal';
 import unShowModal from './modules/unShowModal';
 import accordion from './modules/accordion';
-import accordionNumber from './modules/accordionNumber';/
+import accordionNumber from './modules/accordionNumber';
 import helpPopup from './modules/helpPopup';
 import makeForm from './modules/makeForm';
 import maskPhone from './modules/maskPhone';
